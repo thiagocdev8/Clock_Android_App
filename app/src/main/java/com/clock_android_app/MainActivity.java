@@ -1,20 +1,14 @@
 package com.clock_android_app;
 
-import static android.view.View.INVISIBLE;
-import static android.view.View.VISIBLE;
-
-import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.BatteryManager;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.EditText;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -26,10 +20,14 @@ import com.clock_android_app.databinding.ActivityMainBinding;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Calendar;
+import java.util.Formatter;
+import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     private ActivityMainBinding _binding;
+    private final String _tag = "MainActivity";
     private final BroadcastReceiver batteryReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -61,10 +59,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setFlags();
         setListeners();
         hideOptions();
-
+        startClock();
     }
-
-
 
     @Override
     protected void onDestroy() {
@@ -85,14 +81,32 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
+    private void startClock() {
+        LocalDateTime now = LocalDateTime.now();
+
+
+
+        DateTimeFormatter formatterTimeNow = DateTimeFormatter.ofPattern("HH:mm");
+        DateTimeFormatter formatterTimeSeconds = DateTimeFormatter.ofPattern("ss");
+
+        String timeNow = now.format(formatterTimeNow);
+        String secondsNow = now.format(formatterTimeSeconds);
+
+        _binding.timeNow.setText(timeNow);
+        _binding.timeSeconds.setText(secondsNow);
+
+    }
     private void showOptions() {
-        _binding.checkboxBatteryLevel.animate().translationY(0).setDuration(400);
-        _binding.imageViewClose.animate().translationY(0).setDuration(400);
+
+        int duration = 400;
+        _binding.checkboxBatteryLevel.animate().translationY(0).setDuration(duration);
+        _binding.imageViewClose.animate().translationY(0).setDuration(duration);
     }
 
     private void hideOptions() {
-        _binding.checkboxBatteryLevel.animate().translationY(300).setDuration(400);
-        _binding.imageViewClose.animate().translationY(300).setDuration(400);
+        int duration = 400;
+        _binding.checkboxBatteryLevel.animate().translationY(300).setDuration(duration);
+        _binding.imageViewClose.animate().translationY(300).setDuration(duration);
     }
     private void setListeners(){
         _binding.checkboxBatteryLevel.setOnClickListener(this);

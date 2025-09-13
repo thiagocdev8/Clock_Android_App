@@ -5,4 +5,7 @@
     <string name="desc_settings">Settings</string>
     <string name="desc_close_settings">Clock_Android_App</string>
     <string name="label_battery_percentage">%1$d%%</string>
+    <string name="hours">%1$d</string>
+    <string name="minutes">%1$d</string>
+    <string name="seconds">%1$d</string>
 </resources>
