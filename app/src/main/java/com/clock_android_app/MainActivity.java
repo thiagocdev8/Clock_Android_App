@@ -9,6 +9,7 @@ import android.os.BatteryManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.view.WindowManager;
 import android.widget.EditText;
 
 import androidx.activity.EdgeToEdge;
@@ -50,6 +51,9 @@ public class MainActivity extends AppCompatActivity {
 
 
         registerReceiver(batteryReceiver, new IntentFilter(Intent.ACTION_BATTERY_CHANGED));
+
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
     }
 
