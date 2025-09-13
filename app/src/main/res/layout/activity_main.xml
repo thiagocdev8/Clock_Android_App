@@ -79,6 +79,7 @@
         android:text="@string/label_battery_level"
         android:textColor="@color/textColor"
         android:textSize="15dp"
+        android:checked="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
