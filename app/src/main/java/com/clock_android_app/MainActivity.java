@@ -6,6 +6,9 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.BatteryManager;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.SystemClock;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
@@ -20,14 +23,12 @@ import com.clock_android_app.databinding.ActivityMainBinding;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Calendar;
-import java.util.Formatter;
-import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     private ActivityMainBinding _binding;
-    private final String _tag = "MainActivity";
+    private Handler _handler;
+    private Runnable _runnable;
     private final BroadcastReceiver batteryReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -51,6 +52,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             return insets;
         });
 
+        _handler = new Handler(Looper.getMainLooper());
         registerReceiver(batteryReceiver, new IntentFilter(Intent.ACTION_BATTERY_CHANGED));
 
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
@@ -82,18 +84,24 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void startClock() {
-        LocalDateTime now = LocalDateTime.now();
 
+         _runnable = () -> {
 
+             LocalDateTime now = LocalDateTime.now();
 
-        DateTimeFormatter formatterTimeNow = DateTimeFormatter.ofPattern("HH:mm");
-        DateTimeFormatter formatterTimeSeconds = DateTimeFormatter.ofPattern("ss");
+             DateTimeFormatter formatterTimeNow = DateTimeFormatter.ofPattern("HH:mm");
+             DateTimeFormatter formatterTimeSeconds = DateTimeFormatter.ofPattern("ss");
 
-        String timeNow = now.format(formatterTimeNow);
-        String secondsNow = now.format(formatterTimeSeconds);
+             String timeNow = now.format(formatterTimeNow);
+             String secondsNow = now.format(formatterTimeSeconds);
 
-        _binding.timeNow.setText(timeNow);
-        _binding.timeSeconds.setText(secondsNow);
+             _binding.timeNow.setText(timeNow);
+             _binding.timeSeconds.setText(secondsNow);
+
+             long nowRunning = SystemClock.uptimeMillis();
+             _handler.postAtTime(_runnable, nowRunning + (1000 - nowRunning % 1000));
+         };
+        _runnable.run();
 
     }
     private void showOptions() {
