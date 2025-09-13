@@ -53,27 +53,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             return insets;
         });
 
-
         registerReceiver(batteryReceiver, new IntentFilter(Intent.ACTION_BATTERY_CHANGED));
 
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
+        setFlags();
         setListeners();
+        hideOptions();
 
-    }
-
-    @Override
-    public void onClick(View v) {
-        if(v.getId() == R.id.checkbox_batteryLevel)
-        {
-            toggleBatteryLevel();
-        }
-        else if (v.getId() == R.id.image_view_settings){
-            
-        } else if (v.getId() == R.id.image_view_close) {
-
-        }
     }
 
 
@@ -81,9 +69,31 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onDestroy() {
         super.onDestroy();
-
+        unregisterReceiver(batteryReceiver);
     }
 
+    @Override
+    public void onClick(View v) {
+        if(v.getId() == R.id.checkbox_batteryLevel) {
+            toggleBatteryLevel();
+        }
+        else if (v.getId() == R.id.image_view_settings) {
+            showOptions();
+        }
+        else if (v.getId() == R.id.image_view_close) {
+            hideOptions();
+        }
+    }
+
+    private void showOptions() {
+        _binding.checkboxBatteryLevel.animate().translationY(0).setDuration(400);
+        _binding.imageViewClose.animate().translationY(0).setDuration(400);
+    }
+
+    private void hideOptions() {
+        _binding.checkboxBatteryLevel.animate().translationY(300).setDuration(400);
+        _binding.imageViewClose.animate().translationY(300).setDuration(400);
+    }
     private void setListeners(){
         _binding.checkboxBatteryLevel.setOnClickListener(this);
         _binding.imageViewSettings.setOnClickListener(this);
@@ -95,6 +105,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         boolean isVisible = _binding.batteryLevel.getVisibility() == View.VISIBLE;
 
         _binding.batteryLevel.setVisibility(isVisible ? View.GONE : View.VISIBLE);
+    }
+
+    private void setFlags(){
 
     }
 
