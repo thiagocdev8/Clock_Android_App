@@ -30,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onReceive(Context context, Intent intent) {
             int level = intent.getIntExtra(BatteryManager.EXTRA_LEVEL, 0);
-            _binding.batteryLevel.setText(level + getString(R.string.percentage));
+            _binding.batteryLevel.setText(getString(R.string.label_battery_percentage, level));
         }
     };
 
