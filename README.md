@@ -19,3 +19,6 @@ Open the cloned project in Android Studio. The IDE will automatically handle the
 
 ▶️ Run on a device or emulator:
 Connect an Android device or start an emulator and click the "Run" button in Android Studio to deploy the app.
+
+<img width="862" height="443" alt="image" src="https://github.com/user-attachments/assets/07f09158-de31-4d2e-b3a2-3b9f04669eac" />
+
